@@ -1,9 +1,10 @@
 package com.coditory.quark.common.encode
 
-
-import com.coditory.quark.commons.encode.percent.PercentCodec
+import com.coditory.quark.common.encode.percent.PercentCodec
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import static com.coditory.quark.common.text.Alphabets.*
 
 class PercentCodecSpec extends Specification {
     @Unroll

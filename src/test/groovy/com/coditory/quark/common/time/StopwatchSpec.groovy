@@ -1,13 +1,13 @@
 package com.coditory.quark.common.time
 
-import com.coditory.quark.commons.test.FakeTicker
+import com.coditory.quark.common.test.FakeTicker
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.Duration
 import java.util.function.Supplier
 
-import static com.coditory.quark.commons.test.FakeTicker.fakeTicker
+import static com.coditory.quark.common.test.FakeTicker.fakeTicker
 
 class StopwatchSpec extends Specification {
     FakeTicker ticker = fakeTicker()

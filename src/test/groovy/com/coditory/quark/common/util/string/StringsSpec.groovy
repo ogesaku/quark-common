@@ -1,9 +1,10 @@
 package com.coditory.quark.common.util.string
 
-
-import com.coditory.quark.commons.throwable.ThrowingSupplier
+import com.coditory.quark.common.throwable.ThrowingSupplier
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import static com.coditory.quark.common.util.Strings.*
 
 class StringsSpec extends Specification {
     @Unroll

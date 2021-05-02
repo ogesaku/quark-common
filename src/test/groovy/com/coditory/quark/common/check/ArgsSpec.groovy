@@ -1,8 +1,8 @@
 package com.coditory.quark.common.check
 
 
-import com.coditory.quark.commons.check.base.ArgsChecker
-import com.coditory.quark.commons.check.base.Checker
+import com.coditory.quark.common.check.base.ArgsChecker
+import com.coditory.quark.common.check.base.Checker
 import spock.lang.Unroll
 
 class ArgsSpec extends CheckSpec {

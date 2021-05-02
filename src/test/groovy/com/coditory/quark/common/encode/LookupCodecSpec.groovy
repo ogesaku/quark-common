@@ -1,7 +1,7 @@
 package com.coditory.quark.common.encode
 
 
-import com.coditory.quark.commons.encode.lookup.LookupCodec
+import com.coditory.quark.common.encode.lookup.LookupCodec
 import spock.lang.Specification
 import spock.lang.Unroll
 

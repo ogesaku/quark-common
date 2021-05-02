@@ -1,8 +1,10 @@
-# Intellij Idea project files
-.idea
-!.idea/codeStyles
-
 # Gradle
 build
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ
+out
+*.iml
+.idea/*
+!.idea/codeStyles

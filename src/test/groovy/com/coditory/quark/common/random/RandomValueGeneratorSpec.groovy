@@ -2,8 +2,8 @@ package com.coditory.quark.common.random
 
 import spock.lang.Specification
 
-import static com.coditory.quark.commons.util.Doubles.fuzzyEquals as doublesEqual
-import static com.coditory.quark.commons.util.Floats.fuzzyEquals as floatsEqual
+import static com.coditory.quark.common.util.Doubles.fuzzyEquals as doublesEqual
+import static com.coditory.quark.common.util.Floats.fuzzyEquals as floatsEqual
 
 class RandomValueGeneratorSpec extends Specification {
     RandomValueGenerator generator = RandomValueGenerator.randomGenerator(123)

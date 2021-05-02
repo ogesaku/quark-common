@@ -1,10 +1,9 @@
 package com.coditory.quark.common.manifest
 
-
-import com.coditory.quark.commons.base.UsesFiles
+import com.coditory.quark.common.base.UsesFiles
 import spock.lang.Specification
 
-import static com.coditory.quark.commons.base.MapAssertions.assertMapEqual
+import static com.coditory.quark.common.base.MapAssertions.assertMapEqual
 
 class ManifestReaderSpec extends Specification implements UsesFiles {
     ManifestReader reader = new ManifestReader(classLoader)

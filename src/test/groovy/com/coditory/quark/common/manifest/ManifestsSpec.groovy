@@ -2,7 +2,7 @@ package com.coditory.quark.common.manifest
 
 import spock.lang.Specification
 
-import static com.coditory.quark.commons.base.MapAssertions.assertMapEqual
+import static com.coditory.quark.common.base.MapAssertions.assertMapEqual
 
 class ManifestsSpec extends Specification {
     def "should read MANIFEST.MF file"() {

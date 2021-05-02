@@ -1,7 +1,7 @@
 package com.coditory.quark.common.util
 
-import com.coditory.quark.commons.throwable.ThrowingFunction
-import com.coditory.quark.commons.throwable.ThrowingSupplier
+import com.coditory.quark.common.throwable.ThrowingFunction
+import com.coditory.quark.common.throwable.ThrowingSupplier
 import spock.lang.Specification
 import spock.lang.Unroll
 

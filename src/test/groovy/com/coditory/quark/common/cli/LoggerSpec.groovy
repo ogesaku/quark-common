@@ -1,6 +1,6 @@
 package com.coditory.quark.common.cli
 
-import com.coditory.quark.commons.test.FixedClock
+import com.coditory.quark.common.test.FixedClock
 import spock.lang.Specification
 
 class LoggerSpec extends Specification {

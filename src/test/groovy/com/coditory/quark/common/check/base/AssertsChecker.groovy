@@ -1,6 +1,6 @@
 package com.coditory.quark.common.check.base
 
-import com.coditory.quark.commons.check.Asserts
+import com.coditory.quark.common.check.Asserts
 import groovy.transform.CompileStatic
 import org.jetbrains.annotations.Nullable
 

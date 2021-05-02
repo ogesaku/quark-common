@@ -152,14 +152,19 @@ public final class Stopwatch {
     }
 
     private static String abbreviate(TimeUnit unit) {
-        return switch (unit) {
-            case NANOSECONDS -> "ns";
-            case MICROSECONDS -> "\u03bcs"; // μs
-            case MILLISECONDS -> "ms";
-            case SECONDS -> "s";
-            case MINUTES -> "min";
-            case HOURS -> "h";
-            case DAYS -> "d";
-        };
+        String abbreviation = null;
+        switch (unit) {
+            case NANOSECONDS: abbreviation = "ns"; break;
+            case MICROSECONDS: abbreviation = "\u03bcs"; break; // μs
+            case MILLISECONDS: abbreviation = "ms"; break;
+            case SECONDS: abbreviation = "s"; break;
+            case MINUTES: abbreviation = "min"; break;
+            case HOURS: abbreviation = "h"; break;
+            case DAYS: abbreviation = "d"; break;
+        }
+        if (abbreviation == null) {
+            throw new IllegalStateException("Could not match abbreviation to time unit: " + unit);
+        }
+        return abbreviation;
     }
 }

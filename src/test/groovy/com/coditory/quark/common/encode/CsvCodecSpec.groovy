@@ -1,7 +1,7 @@
 package com.coditory.quark.common.encode
 
 
-import com.coditory.quark.commons.encode.csv.CsvCodec
+import com.coditory.quark.common.encode.csv.CsvCodec
 import spock.lang.Specification
 import spock.lang.Unroll
 

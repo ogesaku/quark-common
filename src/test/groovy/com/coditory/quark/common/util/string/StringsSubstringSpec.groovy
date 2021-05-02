@@ -3,8 +3,7 @@ package com.coditory.quark.common.util.string
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.coditory.quark.commons.util.Strings.substring
-import static com.coditory.quark.commons.util.Strings.truncate
+import static com.coditory.quark.common.util.Strings.*
 
 class StringsSubstringSpec extends Specification {
     @Unroll

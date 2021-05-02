@@ -3,7 +3,7 @@ package com.coditory.quark.common.util.string
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.coditory.quark.commons.util.Strings.repeat
+import static com.coditory.quark.common.util.Strings.*
 
 class StringsRepeatSpec extends Specification {
     @Unroll

@@ -1,8 +1,7 @@
 package com.coditory.quark.common.throwable
 
-
-import com.coditory.quark.commons.test.SimulatedCheckedException
-import com.coditory.quark.commons.test.SimulatedException
+import com.coditory.quark.common.test.SimulatedCheckedException
+import com.coditory.quark.common.test.SimulatedException
 import spock.lang.Specification
 
 import java.lang.reflect.Field

@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.function.Predicate;
 
-import static com.coditory.quark.common.check.Args.check;
-import static com.coditory.quark.common.check.Args.checkNotNull;
-import static com.coditory.quark.common.check.Args.checkPositionIndex;
+import static com.coditory.quark.common.check.Args.*;
 
 abstract class CodePointMatchers {
     static final CodePointMatcher ANY = new Any();
@@ -41,21 +39,41 @@ abstract class CodePointMatchers {
 
     static CodePointMatcher anyOf(CharSequence sequence) {
         String text = sequence.toString();
-        return switch (text.codePointCount(0, text.length())) {
-            case 0 -> NONE;
-            case 1 -> is(text.codePointAt(0));
-            case 2 -> isEither(text.codePointAt(0), text.codePointAt(1));
-            default -> new BitSetMatcher(sequence);
-        };
+        CodePointMatcher matcher;
+        switch (text.codePointCount(0, text.length())) {
+            case 0:
+                matcher = NONE;
+                break;
+            case 1:
+                matcher = is(text.codePointAt(0));
+                break;
+            case 2:
+                matcher = isEither(text.codePointAt(0), text.codePointAt(1));
+                break;
+            default:
+                matcher = new BitSetMatcher(sequence);
+                break;
+        }
+        return matcher;
     }
 
     static CodePointMatcher anyOf(char... chars) {
-        return switch (chars.length) {
-            case 0 -> NONE;
-            case 1 -> is(chars[0]);
-            case 2 -> isEither(chars[0], chars[1]);
-            default -> new BitSetMatcher(BitSets.toBitSet(chars));
-        };
+        CodePointMatcher matcher;
+        switch (chars.length) {
+            case 0:
+                matcher = NONE;
+                break;
+            case 1:
+                matcher = is(chars[0]);
+                break;
+            case 2:
+                matcher = isEither(chars[0], chars[1]);
+                break;
+            default:
+                matcher = new BitSetMatcher(BitSets.toBitSet(chars));
+                break;
+        }
+        return matcher;
     }
 
     static CodePointMatcher noneOf(CharSequence sequence) {
