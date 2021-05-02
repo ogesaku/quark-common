@@ -1,5 +1,7 @@
 package com.coditory.quark.common.text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import static com.coditory.quark.common.check.Args.check;
@@ -7,7 +9,6 @@ import static com.coditory.quark.common.check.Args.checkNotNull;
 import static com.coditory.quark.common.check.Asserts.assertThat;
 
 public final class Tokenizer {
-    private static final CodePointMatcher EMPTY_DELIMITERS = CodePointMatcher.none();
     private static final CodePointMatcher QUOTES = CodePointMatcher.anyOf('\"', '\'');
     private static final CodePointMatcher WHITESPACES = CodePointMatcher.whitespace();
     private static final CodePointMatcher ESCAPES = CodePointMatcher.anyOf('\\');
@@ -19,7 +20,7 @@ public final class Tokenizer {
     private final Cursor cursor;
 
     public Tokenizer(String text) {
-        this(text, EMPTY_DELIMITERS, EMPTY_DELIMITERS, ESCAPES);
+        this(text, QUOTES, WHITESPACES, ESCAPES);
     }
 
     private Tokenizer(String text, CodePointMatcher quotes, CodePointMatcher delimiters, CodePointMatcher escapes) {
@@ -53,6 +54,10 @@ public final class Tokenizer {
     public int peekNextChar() {
         check(!cursor.end(), "Cursor is at the end. There is no next character.");
         return text.charAt(cursor.getPosition());
+    }
+
+    public boolean hasNextChar() {
+        return !atEnd();
     }
 
     public char nextChar() {
@@ -123,6 +128,17 @@ public final class Tokenizer {
         cursor.setPosition(pos);
     }
 
+    public boolean hasNextToken() {
+        if (atEnd()) {
+            return false;
+        }
+        int position = this.getPosition();
+        skipDelimiters();
+        boolean hasNextToken = !atEnd();
+        setPosition(position);
+        return hasNextToken;
+    }
+
     public String nextToken() {
         return stringify(this::nextToken);
     }
@@ -139,6 +155,7 @@ public final class Tokenizer {
     }
 
     public void nextOptionalToken(StringBuilder builder) {
+        skipDelimiters();
         if (cursor.end()) {
             return;
         }
@@ -166,6 +183,7 @@ public final class Tokenizer {
     }
 
     public void nextOptionalUnquotedToken(StringBuilder builder) {
+        skipDelimiters();
         if (cursor.end()) {
             return;
         }
@@ -175,7 +193,7 @@ public final class Tokenizer {
         boolean escaped = false;
         for (int i = indexFrom; i < indexTo; i++) {
             char current = text.charAt(i);
-            if (delimiters.matches(current) || (escaped && quotes.matches(current))) {
+            if (delimiters.matches(current) || (!escaped && quotes.matches(current))) {
                 break;
             }
             escaped = escapes.matches(current);
@@ -201,6 +219,7 @@ public final class Tokenizer {
     }
 
     public void nextOptionalQuotedToken(StringBuilder builder) {
+        skipDelimiters();
         if (cursor.end()) {
             return;
         }
@@ -222,7 +241,7 @@ public final class Tokenizer {
                 if (current != quote && !escapes.matches(current)) {
                     builder.appendCodePoint(escaped);
                 }
-                builder.append(current);
+                builder.appendCodePoint(current);
                 escaped = -1;
             } else {
                 if (current == quote) {
@@ -233,7 +252,7 @@ public final class Tokenizer {
                 if (escapes.matches(current)) {
                     escaped = current;
                 } else {
-                    builder.append(current);
+                    builder.appendCodePoint(current);
                 }
             }
             pos += chars;
@@ -241,6 +260,14 @@ public final class Tokenizer {
         }
         assertThat(ended, "Unpaired quotes when retrieving quoted token");
         cursor.setPosition(pos);
+    }
+
+    public List<String> tokens() {
+        List<String> result = new ArrayList<>();
+        while (hasNextToken()) {
+            result.add(nextToken());
+        }
+        return result;
     }
 
     private void expectedPositionChange(Runnable runnable, String errorMessage) {

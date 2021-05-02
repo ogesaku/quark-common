@@ -1,24 +1,18 @@
 package com.coditory.quark.common.util;
 
-import com.coditory.quark.common.throwable.ThrowingSupplier;
 import com.coditory.quark.common.bit.BitSets;
+import com.coditory.quark.common.throwable.ThrowingSupplier;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.Normalizer;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
-import static com.coditory.quark.common.bit.BitSets.toBitSet;
-import static com.coditory.quark.common.check.Args.checkNotNegative;
-import static com.coditory.quark.common.check.Args.checkNotNull;
-import static com.coditory.quark.common.check.Args.checkPositive;
+import static com.coditory.quark.common.check.Args.*;
 
 public class Strings {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -31,6 +25,19 @@ public class Strings {
 
     public static String[] emptyStringArray() {
         return EMPTY_STRING_ARRAY;
+    }
+
+    public static String quote(String text) {
+        return quote(text, '"');
+    }
+
+    public static String singleQuote(String text) {
+        return quote(text, '\'');
+    }
+
+    public static String quote(String text, char c) {
+        checkNotNull(text);
+        return c + text.replaceAll(c + "", "\\" + c) + c;
     }
 
     public static String multiline(String... text) {
@@ -360,6 +367,12 @@ public class Strings {
                 .noneMatch(text::contains);
     }
 
+    public static boolean containsNoneChar(String text, String chars) {
+        checkNotNull(text, "text");
+        checkNotNull(chars, "chars");
+        return containsNone(text, chars.toCharArray());
+    }
+
     public static boolean containsNone(String text, char[] chars) {
         checkNotNull(text, "text");
         checkNotNull(chars, "chars");
@@ -382,6 +395,12 @@ public class Strings {
         }
         return parts.stream()
                 .noneMatch(s -> containsIgnoreCase(text, s));
+    }
+
+    public static boolean containsNoneCharIgnoreCase(String text, String chars) {
+        checkNotNull(text, "text");
+        checkNotNull(chars, "chars");
+        return containsNoneIgnoreCase(text, chars.toCharArray());
     }
 
     public static boolean containsNoneIgnoreCase(String text, char[] chars) {
@@ -408,6 +427,12 @@ public class Strings {
                 .anyMatch(text::contains);
     }
 
+    public static boolean containsAnyChar(String text, String chars) {
+        checkNotNull(text, "text");
+        checkNotNull(chars, "chars");
+        return containsAny(text, chars.toCharArray());
+    }
+
     public static boolean containsAny(String text, char[] chars) {
         checkNotNull(text, "text");
         checkNotNull(chars, "chars");
@@ -430,6 +455,12 @@ public class Strings {
         }
         return parts.stream()
                 .anyMatch(s -> containsIgnoreCase(text, s));
+    }
+
+    public static boolean containsAnyCharIgnoreCase(String text, String chars) {
+        checkNotNull(text, "text");
+        checkNotNull(chars, "chars");
+        return containsAnyIgnoreCase(text, chars.toCharArray());
     }
 
     public static boolean containsAnyIgnoreCase(String text, char[] chars) {
@@ -456,6 +487,12 @@ public class Strings {
                 .allMatch(text::contains);
     }
 
+    public static boolean containsAllChars(String text, String chars) {
+        checkNotNull(text, "text");
+        checkNotNull(chars, "chars");
+        return containsAll(text, chars.toCharArray());
+    }
+
     public static boolean containsAll(String text, char[] chars) {
         checkNotNull(text, "text");
         checkNotNull(chars, "chars");
@@ -478,6 +515,12 @@ public class Strings {
         }
         return parts.stream()
                 .allMatch(s -> containsIgnoreCase(text, s));
+    }
+
+    public static boolean containsAllIgnoreCase(String text, String chars) {
+        checkNotNull(text, "text");
+        checkNotNull(chars, "chars");
+        return containsAllIgnoreCase(text, chars.toCharArray());
     }
 
     public static boolean containsAllIgnoreCase(String text, char[] chars) {
