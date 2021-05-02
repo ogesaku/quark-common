@@ -48,7 +48,7 @@ publishing {
             pom {
                 name = archivesBaseName
                 description = project.description
-                url = 'https://github.com/coditory/coditory-common'
+                url = 'https://github.com/coditory/quark-common'
                 organization {
                     name = "Coditory"
                     url = "https://coditory.com"

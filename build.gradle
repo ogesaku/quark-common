@@ -8,7 +8,7 @@ plugins {
     id 'io.github.gradle-nexus.publish-plugin' version '1.1.0' apply false
 }
 
-group = 'com.coditory.common'
+group = 'com.coditory.quark'
 description = 'Coditory common library'
 
 dependencies {
