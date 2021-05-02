@@ -7,7 +7,6 @@
 Java utility library for [Coditory Quark projects](https://github.com/topics/coditory-quark).
 
 ## Installation
-
 Add to your `build.gradle`:
 
 ```gradle
