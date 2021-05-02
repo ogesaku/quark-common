@@ -11,7 +11,7 @@ Add to your `build.gradle`:
 
 ```gradle
 dependencies {
-    compile 'com.coditory.quark:quark-common:0.1.0'
+    implementation "com.coditory.quark:quark-common:0.1.0"
 }
 ```
 
