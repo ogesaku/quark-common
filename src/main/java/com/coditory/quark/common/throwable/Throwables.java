@@ -20,11 +20,6 @@ public final class Throwables {
         throw new UnsupportedOperationException("Do not instantiate utility class");
     }
 
-    /**
-     * Executes an action and wraps checked exception in RuntimeException.
-     *
-     * @param action the action to to be executed
-     */
     public static void sneakyThrow(ThrowingRunnable action) {
         checkNotNull(action, "action");
         try {
@@ -34,12 +29,6 @@ public final class Throwables {
         }
     }
 
-    /**
-     * Executes an action and maps exception using {@code throwableMapper}.
-     *
-     * @param action          the action to to be executed
-     * @param throwableMapper maps any throwable
-     */
     public static void sneakyThrow(ThrowingRunnable action, Function<Throwable, RuntimeException> throwableMapper) {
         checkNotNull(action, "action");
         try {
@@ -49,12 +38,6 @@ public final class Throwables {
         }
     }
 
-    /**
-     * Executes an action and wraps checked exception in RuntimeException.
-     *
-     * @param action the action to to be executed
-     * @return the result of the action
-     */
     public static <T> T sneakyThrow(ThrowingSupplier<T> action) {
         checkNotNull(action, "action");
         try {
@@ -65,13 +48,6 @@ public final class Throwables {
         }
     }
 
-    /**
-     * Executes an action and maps exception using {@code throwableMapper}.
-     *
-     * @param action          the action to to be executed
-     * @param throwableMapper maps any throwable
-     * @return the result of the action
-     */
     public static <T> T sneakyThrow(ThrowingSupplier<T> action, Function<Throwable, RuntimeException> throwableMapper) {
         checkNotNull(action, "action");
         try {
@@ -81,12 +57,6 @@ public final class Throwables {
         }
     }
 
-    /**
-     * Throws checked exception wrapped in RuntimeException.
-     * RuntimeException are rethrows without wrapping.
-     *
-     * @param throwable the exception to be rethrown
-     */
     public static void sneakyThrow(Throwable throwable) {
         checkNotNull(throwable, "throwable");
         if (throwable instanceof RuntimeException) {
@@ -95,13 +65,8 @@ public final class Throwables {
         throw new RuntimeException(throwable);
     }
 
-    /**
-     * Returns a result of an action or default value in case of an exception.
-     *
-     * @param action the action to to be executed
-     * @return the optional with a result of the action or {@code null} in case of an exception
-     */
-    public static <T> T onErrorNull(Supplier<T> action) {
+    @Nullable
+    public static <T> T onErrorNull(ThrowingSupplier<T> action) {
         checkNotNull(action, "action");
         try {
             return action.get();
@@ -110,41 +75,21 @@ public final class Throwables {
         }
     }
 
-    /**
-     * Returns a result of an action or default value in case of an exception.
-     *
-     * @param action the action to to be executed
-     * @return the optional with a result of the action or empty optional in case of an exception
-     */
-    public static <T> Optional<T> onErrorEmpty(Supplier<T> action) {
+    public static <T> Optional<T> onErrorEmpty(ThrowingSupplier<T> action) {
         checkNotNull(action, "action");
         return Optional.ofNullable(onErrorNull(action));
     }
 
-    /**
-     * Returns a result of an action or default value in case of an exception.
-     *
-     * @param action       the action to to be executed
-     * @param defaultValue the value returned when action throws an exception
-     * @return the result of the action or default value in case of an exception
-     */
-    public static <T> T onErrorDefault(Supplier<T> action, T defaultValue) {
+    public static <T> T onErrorDefault(ThrowingSupplier<T> action, T defaultValue) {
         checkNotNull(action, "action");
         return onErrorEmpty(action)
                 .orElse(defaultValue);
     }
 
-    /**
-     * Returns a result of an action or default value in case of an exception.
-     *
-     * @param action       the action to to be executed
-     * @param defaultValue the supplier of a value returned when action throws an exception
-     * @return the result of the action or default value in case of an exception
-     */
-    public static <T> T onErrorGet(Supplier<T> action, Supplier<T> defaultValue) {
+    public static <T> T onErrorGet(ThrowingSupplier<T> action, ThrowingSupplier<T> defaultValue) {
         checkNotNull(action, "action");
         return onErrorEmpty(action)
-                .orElseGet(defaultValue);
+                .orElseGet(defaultValue.sneakyThrowing());
     }
 
 
@@ -158,25 +103,12 @@ public final class Throwables {
         }
     }
 
-    /**
-     * Introspects the {@code Throwable} to obtain the root cause.
-     *
-     * @param throwable the throwable to get the root cause for
-     * @return the root cause of the {@code Throwable}
-     */
     public static Throwable getRootCause(Throwable throwable) {
         checkNotNull(throwable, "throwable");
         List<Throwable> list = getCauses(throwable);
         return list.get(list.size() - 1);
     }
 
-    /**
-     * Introspects the {@code Throwable} to obtain the root cause of specific type.
-     *
-     * @param throwable the throwable to get the root cause for
-     * @param type      the throwable type of the root cause
-     * @return the root cause of the {@code Throwable}, {@code null} if cause of given type was not found
-     */
     @Nullable
     @SuppressWarnings("unchecked")
     public static <T extends Throwable> T getRootCauseOfType(Throwable throwable, Class<T> type) {
@@ -191,13 +123,6 @@ public final class Throwables {
         return (T) result;
     }
 
-    /**
-     * Returns the list of {@code Throwable} objects in the
-     * exception chain.
-     *
-     * @param throwable the throwable to inspect
-     * @return the list of throwables, never null
-     */
     public static List<Throwable> getCauses(Throwable throwable) {
         checkNotNull(throwable, "throwable");
         List<Throwable> list = new ArrayList<>();
@@ -210,13 +135,6 @@ public final class Throwables {
         return list;
     }
 
-    /**
-     * Gets the stack trace from a Throwable as a String.
-     *
-     * @param throwable the {@code Throwable} to be examined
-     * @return the stack trace as generated by the exception's
-     * {@code printStackTrace(PrintWriter)} method
-     */
     public static String getStackTrace(Throwable throwable) {
         checkNotNull(throwable, "throwable");
         StringWriter sw = new StringWriter();

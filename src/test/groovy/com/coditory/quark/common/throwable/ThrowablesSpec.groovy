@@ -146,7 +146,7 @@ class ThrowablesSpec extends Specification {
             String defaultValue = "default"
         and:
             int executions = 0;
-            Supplier<String> defaultValueSupplier = { executions++; defaultValue }
+            ThrowingSupplier<String> defaultValueSupplier = { executions++; defaultValue }
         when:
             String result = Throwables.onErrorGet({ throw new SimulatedException() }, defaultValueSupplier)
         then:
