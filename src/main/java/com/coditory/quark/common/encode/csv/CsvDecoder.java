@@ -46,7 +46,7 @@ final class CsvDecoder implements Translator {
         }
         String quoteless = input.subSequence(1, input.length() - 1).toString();
         if (Strings.containsAny(quoteless, searchChars)) {
-            out.append(replace(quoteless, CSV_ESCAPED_QUOTE_STR, CSV_QUOTE_STR));
+            out.append(Strings.replace(quoteless, CSV_ESCAPED_QUOTE_STR, CSV_QUOTE_STR));
         } else {
             out.append(quoteless);
         }

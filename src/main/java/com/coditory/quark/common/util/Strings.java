@@ -4,14 +4,19 @@ import com.coditory.quark.common.throwable.ThrowingSupplier;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.Normalizer;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
-import static com.coditory.quark.common.check.Args.*;
+import static com.coditory.quark.common.check.Args.checkNotNegative;
+import static com.coditory.quark.common.check.Args.checkNotNull;
+import static com.coditory.quark.common.check.Args.checkPositive;
 
 public class Strings {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -30,29 +35,78 @@ public class Strings {
         return quote(text, '"');
     }
 
-    public static String singleQuote(String text) {
+    public static String quoteSingle(String text) {
         return quote(text, '\'');
     }
 
     public static String quote(String text, char c) {
-        checkNotNull(text);
-        return c + text.replaceAll(c + "", "\\" + c) + c;
+        checkNotNull(text, "text");
+        return c + escapeQuotes(text, c) + c;
     }
 
-    static boolean isQuotedString(String text) {
-        checkNotNull(text);
+    public static boolean isQuoted(String text) {
+        return isQuoted(text, '"');
+    }
+
+    public static boolean isSingleQuoted(String text) {
+        return isQuoted(text, '\'');
+    }
+
+    public static boolean isQuoted(String text, char quote) {
+        checkNotNull(text, "text");
         if (text.length() < 2) {
             return false;
         }
-        return (text.startsWith("\"") && text.endsWith("\"")
-                || (text.startsWith("'") && text.endsWith("'")));
+        return text.charAt(0) == quote
+                && text.charAt(text.length() - 1) == quote;
     }
 
-    static String unquote(String text) {
-        checkNotNull(text);
-        return isQuotedString(text)
-                ? text.substring(1, text.length() - 1)
-                : text;
+    public static String escapeQuotes(String value) {
+        return escapeQuotes(value, '"');
+    }
+
+    public static String escapeSingleQuotes(String value) {
+        return escapeQuotes(value, '\'');
+    }
+
+    public static String escapeQuotes(String text, char quote) {
+        checkNotNull(text, "text");
+        return text.indexOf(quote) == -1
+                ? text
+                : replace(text, "" + quote, "\\" + quote);
+    }
+
+    public static String unquote(String text) {
+        return unquote(text, '"');
+    }
+
+    public static String unquoteSingle(String text) {
+        return unquote(text, '\'');
+    }
+
+    public static String unquote(String text, char quote) {
+        checkNotNull(text, "text");
+        if (!isQuoted(text, quote)) {
+            return text;
+        }
+        String content = text.substring(1, text.length() - 1);
+        return unescapeQuotations(content, quote);
+    }
+
+    public static String unescapeQuotations(String value) {
+        return unescapeQuotations(value, '"');
+    }
+
+    public static String unescapeSingleQuotations(String value) {
+        return unescapeQuotations(value, '\'');
+    }
+
+    public static String unescapeQuotations(String text, char quote) {
+        checkNotNull(text, "text");
+        String escapedQuote = "\\" + quote;
+        return text.indexOf(escapedQuote) == -1
+                ? text
+                : replace(text, escapedQuote, "" + quote);
     }
 
     public static String multiline(String... text) {
@@ -906,12 +960,12 @@ public class Strings {
                 .replaceFirst(replacer);
     }
 
-    public static String replaceAll(String text, Pattern pattern, String replacement) {
+    public static String replace(String text, Pattern pattern, String replacement) {
         return pattern.matcher(text)
                 .replaceAll(replacement);
     }
 
-    public static String replaceAll(String text, Pattern pattern, Function<MatchResult, String> replacer) {
+    public static String replace(String text, Pattern pattern, Function<MatchResult, String> replacer) {
         return pattern.matcher(text)
                 .replaceAll(replacer);
     }

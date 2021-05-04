@@ -3,7 +3,12 @@ package com.coditory.quark.common.util.string
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.coditory.quark.common.util.Strings.*
+import static com.coditory.quark.common.util.Strings.replace
+import static com.coditory.quark.common.util.Strings.replaceFirst
+import static com.coditory.quark.common.util.Strings.replaceFirstIgnoreCase
+import static com.coditory.quark.common.util.Strings.replaceIgnoreCase
+import static com.coditory.quark.common.util.Strings.replaceLast
+import static com.coditory.quark.common.util.Strings.replaceLastIgnoreCase
 
 class StringsReplaceSpec extends Specification {
     @Unroll

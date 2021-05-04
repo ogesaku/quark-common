@@ -1,6 +1,7 @@
 package com.coditory.quark.common.encode.csv;
 
 import com.coditory.quark.common.encode.Translator;
+import com.coditory.quark.common.util.Strings;
 
 import static com.coditory.quark.common.util.Strings.containsNone;
 import static com.coditory.quark.common.util.Strings.replace;
@@ -40,7 +41,7 @@ final class CsvEncoder implements Translator {
             return false;
         }
         out.append(CSV_QUOTE);
-        out.append(replace(input, CSV_QUOTE_STR, CSV_ESCAPED_QUOTE_STR));
+        out.append(Strings.replace(input, CSV_QUOTE_STR, CSV_ESCAPED_QUOTE_STR));
         out.append(CSV_QUOTE);
         return true;
     }

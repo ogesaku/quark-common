@@ -1,6 +1,7 @@
 package com.coditory.quark.common.text;
 
 import com.coditory.quark.common.collection.Maps;
+import com.coditory.quark.common.util.Strings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import static com.coditory.quark.common.util.Strings.isNullOrBlank;
-import static com.coditory.quark.common.util.Strings.replaceAll;
+import static com.coditory.quark.common.util.Strings.replace;
 import static com.coditory.quark.common.util.Strings.stripAccents;
 
 public final class Slugifier {
@@ -60,13 +61,13 @@ public final class Slugifier {
     }
 
     private String matchAndReplace(String input) {
-        String text = replaceAll(input, PATTERN_NORMALIZE_NON_ASCII, EMPTY);
+        String text = Strings.replace(input, PATTERN_NORMALIZE_NON_ASCII, EMPTY);
         text = underscoreSeparator
-                ? replaceAll(text, PATTERN_NORMALIZE_UNDERSCORE_SEPARATOR, UNDERSCORE)
-                : replaceAll(text, PATTERN_NORMALIZE_HYPHEN_SEPARATOR, HYPHEN);
+                ? Strings.replace(text, PATTERN_NORMALIZE_UNDERSCORE_SEPARATOR, UNDERSCORE)
+                : Strings.replace(text, PATTERN_NORMALIZE_HYPHEN_SEPARATOR, HYPHEN);
         text = underscoreSeparator
-                ? replaceAll(text, PATTERN_NORMALIZE_TRIM_UNDERSCORE, EMPTY)
-                : replaceAll(text, PATTERN_NORMALIZE_TRIM_DASH, EMPTY);
+                ? Strings.replace(text, PATTERN_NORMALIZE_TRIM_UNDERSCORE, EMPTY)
+                : Strings.replace(text, PATTERN_NORMALIZE_TRIM_DASH, EMPTY);
         return text;
     }
 
