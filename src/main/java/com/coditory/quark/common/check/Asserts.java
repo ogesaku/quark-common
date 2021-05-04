@@ -1,5 +1,6 @@
 package com.coditory.quark.common.check;
 
+import com.coditory.quark.common.util.Strings;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -9,6 +10,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.coditory.quark.common.check.Args.checkNotNegative;
+import static com.coditory.quark.common.check.Args.checkNotNull;
+import static com.coditory.quark.common.util.Strings.quote;
 import static java.lang.String.format;
 
 public final class Asserts {
@@ -70,7 +74,7 @@ public final class Asserts {
     }
 
     public static int assertPositionIndex(int index, int size, String indexName) {
-        Args.checkNotNegative(size, "size");
+        checkNotNegative(size, "size");
         if (index < 0 || index >= size) {
             throw new IllegalStateException(badPositionIndex(index, size, indexName));
         }
@@ -107,6 +111,44 @@ public final class Asserts {
         if (value == null || value.trim().isEmpty()) {
             String field = name == null ? "string" : name;
             String message = message("non-blank " + field, value);
+            throw new IllegalStateException(message);
+        }
+        return value;
+    }
+
+    public static String assertNotContains(@Nullable String value, char c) {
+        return assertNotContains(value, c, null);
+    }
+
+    public static String assertNotContains(@Nullable String value, char c, String name) {
+        return assertNotContains(value, "" + c, null);
+    }
+
+    public static String assertNotContains(@Nullable String value, String c) {
+        return assertNotContains(value, "" + c, null);
+    }
+
+    public static String assertNotContains(@Nullable String value, String chunk, String name) {
+        checkNotNull(value, "value");
+        checkNotNull(chunk, "chunk");
+        if (value.contains(chunk)) {
+            String field = name == null ? "string" : name;
+            String message = message(field + " to not contain: " + quote(chunk), value);
+            throw new IllegalStateException(message);
+        }
+        return value;
+    }
+
+    public static String assertNotContainsAnyChar(@Nullable String value, String chars) {
+        return assertNotContainsAnyChar(value, chars, null);
+    }
+
+    public static String assertNotContainsAnyChar(@Nullable String value, String chars, String name) {
+        checkNotNull(value, "value");
+        checkNotNull(chars, "chars");
+        if (Strings.containsAnyChar(value, chars)) {
+            String field = name == null ? "string" : name;
+            String message = message(field + " to not contain any character from: " + quote(chars), value);
             throw new IllegalStateException(message);
         }
         return value;

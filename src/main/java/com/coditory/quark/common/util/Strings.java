@@ -1,6 +1,5 @@
 package com.coditory.quark.common.util;
 
-import com.coditory.quark.common.bit.BitSets;
 import com.coditory.quark.common.throwable.ThrowingSupplier;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,6 +37,22 @@ public class Strings {
     public static String quote(String text, char c) {
         checkNotNull(text);
         return c + text.replaceAll(c + "", "\\" + c) + c;
+    }
+
+    static boolean isQuotedString(String text) {
+        checkNotNull(text);
+        if (text.length() < 2) {
+            return false;
+        }
+        return (text.startsWith("\"") && text.endsWith("\"")
+                || (text.startsWith("'") && text.endsWith("'")));
+    }
+
+    static String unquote(String text) {
+        checkNotNull(text);
+        return isQuotedString(text)
+                ? text.substring(1, text.length() - 1)
+                : text;
     }
 
     public static String multiline(String... text) {
@@ -847,11 +862,11 @@ public class Strings {
         return replace(text, searchString, "", false);
     }
 
-    public static String removeCharacters(String text, String chars) {
-        return removeCharacters(text, BitSets.toBitSet(chars));
+    public static String removeChars(String text, String chars) {
+        return removeChars(text, BitSets.toBitSet(chars));
     }
 
-    public static String removeCharacters(String text, BitSet bitSet) {
+    public static String removeChars(String text, BitSet bitSet) {
         checkNotNull(text, "text");
         checkNotNull(bitSet, "bitSet");
         StringBuilder builder = new StringBuilder();

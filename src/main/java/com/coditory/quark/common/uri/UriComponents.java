@@ -162,10 +162,7 @@ public final class UriComponents {
     }
 
     public Map<String, String> getSingleValueQueryParams() {
-        return Maps.mapValues(
-                queryParams,
-                entry -> Lists.firstOrNull(entry.getValue())
-        );
+        return Maps.mapValues(queryParams, Lists::firstOrNull);
     }
 
     @Nullable

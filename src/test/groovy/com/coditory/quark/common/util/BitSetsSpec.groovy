@@ -1,5 +1,6 @@
-package com.coditory.quark.common.bit
+package com.coditory.quark.common.util
 
+import com.coditory.quark.common.util.BitSets
 import spock.lang.Specification
 
 class BitSetsSpec extends Specification {
@@ -62,12 +63,12 @@ class BitSetsSpec extends Specification {
             bitSetWithOne.get(1)
     }
 
-    def "copyOf(bitSet) - should create immutable copy"() {
+    def "unmodifiableBitSet(bitSet) - should create unmodifiable copy"() {
         given:
             BitSet bitSet = new BitSet()
             bitSet.set(1)
         when:
-            BitSet immutable = BitSets.copyOf(bitSet)
+            BitSet immutable = BitSets.unmodifiableBitSet(bitSet)
         then:
             immutable.get(1)
 

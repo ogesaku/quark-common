@@ -1,11 +1,12 @@
-package com.coditory.quark.common.bit
+package com.coditory.quark.common.util
 
+import com.coditory.quark.common.util.BitSets
 import spock.lang.Specification
 
-class ImmutableBitSetSpec extends Specification {
+class UnmodifiableBitSetSpec extends Specification {
     def "should create immutable bitSet"() {
         given:
-            BitSet bitSet = new ImmutableBitSet()
+            BitSet bitSet = new BitSets.UnmodifiableBitSet()
         expect:
             throwsException { bitSet.flip(0) }
             throwsException { bitSet.flip(0, 1) }

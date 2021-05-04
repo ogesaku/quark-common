@@ -1,11 +1,14 @@
 package com.coditory.quark.common.check.base
 
-
+import com.coditory.quark.common.util.Strings
 import groovy.transform.CompileStatic
 import org.jetbrains.annotations.Nullable
 
 import java.util.function.BiFunction
 import java.util.function.Function
+
+import static com.coditory.quark.common.util.Strings.quote
+import static com.coditory.quark.common.util.Strings.quote
 
 @CompileStatic
 interface Checker {
@@ -168,4 +171,16 @@ interface Checker {
     int checkPositionIndex(int index, int size);
 
     int checkPositionIndex(int index, int size, String indexName);
+
+    String checkNotContains(@Nullable String value, char c)
+
+    String checkNotContains(@Nullable String value, char c, String name)
+
+    String checkNotContains(@Nullable String value, String c)
+
+    String checkNotContains(@Nullable String value, String chunk, String name)
+
+    String checkNotContainsAnyChar(@Nullable String value, String chars)
+
+    String checkNotContainsAnyChar(String value, String chars, String name)
 }

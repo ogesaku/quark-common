@@ -437,4 +437,82 @@ abstract class CheckSpec extends Specification {
             1     | 2
             10    | 100
     }
+
+    @Unroll
+    def "checkNotContains(#value, #chunk) throws no error"() {
+        when:
+            checker.checkNotContains(value, chunk)
+        then:
+            noExceptionThrown()
+        where:
+            value | chunk
+            "abc" | "ac"
+            "abc" | "A"
+    }
+
+    @Unroll
+    def "checkNotContains(#value, #chunk) throws error"() {
+        when:
+            checker.checkNotContains(value, chunk)
+        then:
+            RuntimeException e = thrown(RuntimeException)
+            e.class == checker.exceptionType()
+        where:
+            value | chunk
+            "abc" | "abc"
+            "abc" | "ab"
+            "abc" | "bc"
+            "abc" | "c"
+    }
+
+    @Unroll
+    def "checkNotContains(#value, #c) throws no error"() {
+        when:
+            checker.checkNotContains(value, c as char)
+        then:
+            noExceptionThrown()
+        where:
+            value | c
+            "abc" | "A"
+            "abc" | "d"
+    }
+
+    @Unroll
+    def "checkNotContains(#value, #c) throws error"() {
+        when:
+            checker.checkNotContains(value, c as char)
+        then:
+            RuntimeException e = thrown(RuntimeException)
+            e.class == checker.exceptionType()
+        where:
+            value | c
+            "abc" | "a"
+            "abc" | "b"
+    }
+
+    @Unroll
+    def "checkNotContainsAnyChar(#value, #chars) throws no error"() {
+        when:
+            checker.checkNotContainsAnyChar(value, chars)
+        then:
+            noExceptionThrown()
+        where:
+            value | chars
+            "abc" | "Ad"
+            "abc" | "AAA"
+    }
+
+    @Unroll
+    def "checkNotContainsAnyChar(#value, #chars) throws error"() {
+        when:
+            checker.checkNotContainsAnyChar(value, chars)
+        then:
+            RuntimeException e = thrown(RuntimeException)
+            e.class == checker.exceptionType()
+        where:
+            value | chars
+            "abc" | "Aa"
+            "abc" | "cX"
+            "abc" | "AaA"
+    }
 }

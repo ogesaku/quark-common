@@ -1,6 +1,6 @@
 package com.coditory.quark.common.encode.percent;
 
-import com.coditory.quark.common.bit.BitSets;
+import com.coditory.quark.common.util.BitSets;
 import com.coditory.quark.common.encode.TranslationCodec;
 import com.coditory.quark.common.encode.Translator;
 
@@ -9,7 +9,7 @@ import java.util.BitSet;
 
 import static com.coditory.quark.common.check.Args.checkNotNull;
 import static com.coditory.quark.common.text.Alphabets.URI_UNRESERVED;
-import static com.coditory.quark.common.bit.BitSets.toBitSet;
+import static com.coditory.quark.common.util.BitSets.toBitSet;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public final class PercentCodec {

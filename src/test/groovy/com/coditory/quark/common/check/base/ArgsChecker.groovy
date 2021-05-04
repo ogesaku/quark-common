@@ -408,4 +408,34 @@ class ArgsChecker implements Checker {
     int checkPositionIndex(int index, int size, String indexName) {
         return Args.checkPositionIndex(index, size, indexName)
     }
+
+    @Override
+    String checkNotContains(@Nullable String value, char c) {
+        return Args.checkNotContains(value, c)
+    }
+
+    @Override
+    String checkNotContains(@Nullable String value, char c, String name) {
+        return Args.checkNotContains(value, c, name)
+    }
+
+    @Override
+    String checkNotContains(@Nullable String value, String c) {
+        return Args.checkNotContains(value, c)
+    }
+
+    @Override
+    String checkNotContains(@Nullable String value, String chunk, String name) {
+        return Args.checkNotContains(value, chunk, name)
+    }
+
+    @Override
+    String checkNotContainsAnyChar(@Nullable String value, String chars) {
+        return Args.checkNotContainsAnyChar(value, chars)
+    }
+
+    @Override
+    String checkNotContainsAnyChar(String value, String chars, String name) {
+        return Args.checkNotContainsAnyChar(value, chars, name)
+    }
 }

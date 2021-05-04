@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.coditory.quark.common.check.Args.checkNotEmpty;
 import static com.coditory.quark.common.check.Args.checkNotNull;
@@ -31,6 +32,14 @@ public final class Lists {
         checkNotNull(mapper, "mapper");
         return list.stream()
                 .map(mapper)
+                .collect(toUnmodifiableList());
+    }
+
+    public static <T> List<T> filter(List<T> list, Predicate<T> predicate) {
+        checkNotNull(list, "list");
+        checkNotNull(predicate, "predicate");
+        return list.stream()
+                .filter(predicate)
                 .collect(toUnmodifiableList());
     }
 

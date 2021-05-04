@@ -3,7 +3,7 @@ package com.coditory.quark.common.collection
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static Sets.*
+import static com.coditory.quark.common.collection.Sets.*
 
 class SetsSpec extends Specification {
     @Unroll
@@ -147,5 +147,12 @@ class SetsSpec extends Specification {
             a          || expected
             ["a", "b"] || ["ax", "bx"]
             []         || []
+    }
+
+    def "filter(set, predicate)"() {
+        when:
+            Set<String> result = filter(["ax", "b", "x", "a"] as Set<String>, { !it.contains("x") })
+        then:
+            result == ["b", "a"] as Set
     }
 }

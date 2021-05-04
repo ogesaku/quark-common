@@ -6,21 +6,24 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.coditory.quark.common.check.Args.checkNotNull;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.toUnmodifiableMap;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 public final class Maps {
     private Maps() {
         throw new UnsupportedOperationException("Do not instantiate utility class");
     }
 
-    public static <K, V> Map<V, K> invert(Map<K, V> input) {
-        checkNotNull(input, "input");
+    public static <K, V> Map<V, K> invert(Map<K, V> map) {
+        checkNotNull(map, "map");
         Map<V, K> result = new LinkedHashMap<>();
-        for (Entry<K, V> entry : input.entrySet()) {
+        for (Entry<K, V> entry : map.entrySet()) {
             if (!result.containsKey(entry.getValue())) {
                 result.put(entry.getValue(), entry.getKey());
             }
@@ -38,29 +41,49 @@ public final class Maps {
     }
 
     public static <K, V, K2, V2> Map<K2, V2> map(Map<K, V> map, Function<Map.Entry<K, V>, Map.Entry<K2, V2>> mapper) {
+        checkNotNull(map, "map");
+        checkNotNull(mapper, "mapper");
         return map.entrySet().stream()
                 .map(mapper)
                 .collect(toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public static <K, V, R> Map<R, V> mapKeysByKeys(Map<K, V> map, Function<K, R> mapper) {
+    public static <K, V, R> Map<R, V> mapKeys(Map<K, V> map, Function<K, R> mapper) {
+        checkNotNull(map, "map");
+        checkNotNull(mapper, "mapper");
         return map.entrySet().stream()
                 .collect(toUnmodifiableMap(entry -> mapper.apply(entry.getKey()), Entry::getValue));
     }
 
-    public static <K, V, R> Map<R, V> mapKeys(Map<K, V> map, Function<Entry<K, V>, R> mapper) {
-        return map.entrySet().stream()
-                .collect(toUnmodifiableMap(mapper, Entry::getValue));
-    }
-
-    public static <K, V, R> Map<K, R> mapValuesByValues(Map<K, V> map, Function<V, R> mapper) {
+    public static <K, V, R> Map<K, R> mapValues(Map<K, V> map, Function<V, R> mapper) {
+        checkNotNull(map, "map");
+        checkNotNull(mapper, "mapper");
         return map.entrySet().stream()
                 .collect(toUnmodifiableMap(Entry::getKey, entry -> mapper.apply(entry.getValue())));
     }
 
-    public static <K, V, R> Map<K, R> mapValues(Map<K, V> map, Function<Entry<K, V>, R> mapper) {
+    public static <K, V> Map<K, V> filter(Map<K, V> map, Predicate<Entry<K, V>> predicate) {
+        checkNotNull(map, "map");
+        checkNotNull(predicate, "predicate");
         return map.entrySet().stream()
-                .collect(toUnmodifiableMap(Entry::getKey, mapper));
+                .filter(predicate)
+                .collect(toUnmodifiableMap(Entry::getKey, Entry::getValue));
+    }
+
+    public static <K, V> Map<K, V> filterByKey(Map<K, V> map, Predicate<K> predicate) {
+        checkNotNull(map, "map");
+        checkNotNull(predicate, "predicate");
+        return map.entrySet().stream()
+                .filter(entry -> predicate.test(entry.getKey()))
+                .collect(toUnmodifiableMap(Entry::getKey, Entry::getValue));
+    }
+
+    public static <K, V> Map<K, V> filterByValue(Map<K, V> map, Predicate<V> predicate) {
+        checkNotNull(map, "map");
+        checkNotNull(predicate, "predicate");
+        return map.entrySet().stream()
+                .filter(entry -> predicate.test(entry.getValue()))
+                .collect(toUnmodifiableMap(Entry::getKey, Entry::getValue));
     }
 
     public static <K, V> Map<K, V> put(Map<K, V> map, K key, V value) {

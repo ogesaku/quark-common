@@ -1,6 +1,6 @@
 package com.coditory.quark.common.text;
 
-import com.coditory.quark.common.bit.BitSets;
+import com.coditory.quark.common.util.BitSets;
 
 import java.util.BitSet;
 import java.util.regex.Matcher;
@@ -11,7 +11,7 @@ import static com.coditory.quark.common.check.Args.checkPositive;
 import static java.lang.Character.isWhitespace;
 
 public final class Words {
-    private static BitSet ABBREVIATION_DELIMS = BitSets.toBitSet(" \n\t\r,.-?!");
+    private static final BitSet ABBREVIATION_DELIMS = BitSets.toBitSet(" \n\t\r,.-?!");
 
     private Words() {
         throw new UnsupportedOperationException("Do not instantiate utility class");
@@ -81,7 +81,7 @@ public final class Words {
     }
 
     public static String initials(String str) {
-        return initials(str, null);
+        return initials(str);
     }
 
     public static String initials(String text, char... delimiters) {

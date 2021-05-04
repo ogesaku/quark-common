@@ -10,6 +10,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.coditory.quark.common.util.Strings.quote;
 import static java.lang.String.format;
 
 public final class Args {
@@ -108,6 +109,44 @@ public final class Args {
         if (Strings.containsWhitespaces(value)) {
             String field = name == null ? "string" : name;
             String message = message(field + " without whitespaces", value);
+            throw new IllegalArgumentException(message);
+        }
+        return value;
+    }
+
+    public static String checkNotContains(@Nullable String value, char c) {
+        return checkNotContains(value, c, null);
+    }
+
+    public static String checkNotContains(@Nullable String value, char c, String name) {
+        return checkNotContains(value, "" + c, null);
+    }
+
+    public static String checkNotContains(@Nullable String value, String c) {
+        return checkNotContains(value, "" + c, null);
+    }
+
+    public static String checkNotContains(@Nullable String value, String chunk, String name) {
+        checkNotNull(value, "value");
+        checkNotNull(chunk, "chunk");
+        if (value.contains(chunk)) {
+            String field = name == null ? "string" : name;
+            String message = message(field + " to not contain: " + quote(chunk), value);
+            throw new IllegalArgumentException(message);
+        }
+        return value;
+    }
+
+    public static String checkNotContainsAnyChar(@Nullable String value, String chars) {
+        return checkNotContainsAnyChar(value, chars, null);
+    }
+
+    public static String checkNotContainsAnyChar(@Nullable String value, String chars, String name) {
+        checkNotNull(value, "value");
+        checkNotNull(chars, "chars");
+        if (Strings.containsAnyChar(value, chars)) {
+            String field = name == null ? "string" : name;
+            String message = message(field + " to not contain any character from: " + quote(chars), value);
             throw new IllegalArgumentException(message);
         }
         return value;

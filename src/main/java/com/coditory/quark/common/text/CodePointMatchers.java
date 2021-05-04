@@ -1,6 +1,6 @@
 package com.coditory.quark.common.text;
 
-import com.coditory.quark.common.bit.BitSets;
+import com.coditory.quark.common.util.BitSets;
 import com.coditory.quark.common.util.Strings;
 
 import java.util.Arrays;

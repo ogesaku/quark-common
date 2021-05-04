@@ -3,7 +3,7 @@ package com.coditory.quark.common.collection
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static Maps.*
+import static com.coditory.quark.common.collection.Maps.*
 
 class MapsSpec extends Specification {
     @Unroll
@@ -72,27 +72,7 @@ class MapsSpec extends Specification {
     @Unroll
     def "mapKeys(#map, {...}) == #expected"() {
         expect:
-            mapKeys(map, { it.getKey() + it.getValue() + "X" }) == expected
-        where:
-            map              || expected
-            [a: "A", b: "B"] || [aAX: "A", bBX: "B"]
-            [:]              || [:]
-    }
-
-    @Unroll
-    def "mapValues(#map, {...}) == #expected"() {
-        expect:
-            mapValues(map, { it.getKey() + it.getValue() + "X" }) == expected
-        where:
-            map              || expected
-            [a: "A", b: "B"] || [a: "aAX", b: "bBX"]
-            [:]              || [:]
-    }
-
-    @Unroll
-    def "mapKeysByKeys(#map, {...}) == #expected"() {
-        expect:
-            mapKeysByKeys(map, { it + "X" }) == expected
+            mapKeys(map, { it + "X" }) == expected
         where:
             map              || expected
             [a: "A", b: "B"] || [aX: "A", bX: "B"]
@@ -100,13 +80,34 @@ class MapsSpec extends Specification {
     }
 
     @Unroll
-    def "mapValuesByValues(#map, {...}) == #expected"() {
+    def "mapValues(#map, {...}) == #expected"() {
         expect:
-            mapValuesByValues(map, { it + "X" }) == expected
+            mapValues(map, { it + "X" }) == expected
         where:
             map              || expected
             [a: "A", b: "B"] || [a: "AX", b: "BX"]
             [:]              || [:]
+    }
+
+    def "filter(map, predicate)"() {
+        when:
+            Map<String, String> result = filter([a: "xA", b: "B"], { !it.toString().contains("x") })
+        then:
+            result == [b: "B"]
+    }
+
+    def "filterByKey(map, predicate)"() {
+        when:
+            Map<String, String> result = filterByKey([a: "xA", xb: "B"], { !it.contains("x") })
+        then:
+            result == [a: "xA"]
+    }
+
+    def "filterByValue(map, predicate)"() {
+        when:
+            Map<String, String> result = filterByValue([a: "xA", xb: "B"], { !it.contains("x") })
+        then:
+            result == [xb: "B"]
     }
 
     @Unroll

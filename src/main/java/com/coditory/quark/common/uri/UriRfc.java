@@ -2,14 +2,14 @@ package com.coditory.quark.common.uri;
 
 import com.coditory.quark.common.encode.TranslationCodec;
 import com.coditory.quark.common.encode.percent.PercentCodec;
-import com.coditory.quark.common.util.Strings;
 import com.coditory.quark.common.text.Alphabets;
+import com.coditory.quark.common.util.Strings;
 
 import java.util.BitSet;
 
 import static com.coditory.quark.common.check.Args.checkNotNull;
-import static com.coditory.quark.common.bit.BitSets.toBitSet;
-import static com.coditory.quark.common.util.Strings.removeCharacters;
+import static com.coditory.quark.common.util.BitSets.toBitSet;
+import static com.coditory.quark.common.util.Strings.removeChars;
 
 public enum UriRfc {
     SCHEME(UriRfcCharacters.SCHEME_ALLOWED),
@@ -32,7 +32,7 @@ public enum UriRfc {
     UriRfc(String allowed, boolean decodeSpaceAsPlus) {
         this.allowed = toBitSet(allowed);
         String encode = decodeSpaceAsPlus
-                ? removeCharacters(allowed, "+")
+                ? removeChars(allowed, "+")
                 : allowed;
         this.codec = PercentCodec.builder()
                 .safeCharacters(encode)
@@ -111,7 +111,7 @@ public enum UriRfc {
         static final String PORT_ALLOWED = Alphabets.NUMERIC;
         static final String PATH_SEGMENT_ALLOWED = PCHAR;
         static final String QUERY_ALLOWED = PCHAR + "/?";
-        static final String QUERY_PARAM_ALLOWED = removeCharacters(QUERY_ALLOWED, "=&");
+        static final String QUERY_PARAM_ALLOWED = removeChars(QUERY_ALLOWED, "=&");
         static final String FRAGMENT_ALLOWED = PCHAR + "/?";
     }
 }

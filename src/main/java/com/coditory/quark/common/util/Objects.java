@@ -208,6 +208,10 @@ public final class Objects {
         return java.util.Objects.hash(values);
     }
 
+    public static boolean nonNull(@Nullable Object value) {
+        return value != null;
+    }
+
     public static boolean contains(Object[] array, Object target) {
         for (Object value : array) {
             if (equals(value, target)) {

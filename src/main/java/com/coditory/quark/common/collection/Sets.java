@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.coditory.quark.common.check.Args.checkNotEmpty;
 import static com.coditory.quark.common.check.Args.checkNotNull;
@@ -22,6 +23,14 @@ public final class Sets {
         checkNotNull(mapper, "mapper");
         return set.stream()
                 .map(mapper)
+                .collect(toUnmodifiableSet());
+    }
+
+    public static <T> Set<T> filter(Set<T> set, Predicate<T> predicate) {
+        checkNotNull(set, "set");
+        checkNotNull(predicate, "predicate");
+        return set.stream()
+                .filter(predicate)
                 .collect(toUnmodifiableSet());
     }
 

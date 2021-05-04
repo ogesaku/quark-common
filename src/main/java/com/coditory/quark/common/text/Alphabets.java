@@ -1,8 +1,7 @@
 package com.coditory.quark.common.text;
 
-import com.coditory.quark.common.check.Args;
-
 import static com.coditory.quark.common.check.Args.check;
+import static com.coditory.quark.common.check.Args.checkNotNegative;
 
 public final class Alphabets {
     private Alphabets() {
@@ -43,8 +42,8 @@ public final class Alphabets {
     public static final String URI_FRAGMENT_UNRESERVED = URI_SEGMENT_UNRESERVED + "+/?";
 
     public static String asciiAlphabet(int asciiFromInclusive, int asciiToExclusive) {
-        Args.checkNotNegative(asciiFromInclusive, "asciiFromInclusive");
-        Args.checkNotNegative(asciiToExclusive, "asciiToInclusive");
+        checkNotNegative(asciiFromInclusive, "asciiFromInclusive");
+        checkNotNegative(asciiToExclusive, "asciiToInclusive");
         check(asciiFromInclusive < asciiToExclusive, "Expected: asciiFromInclusive < asciiToExclusive");
         check(asciiFromInclusive >= 32, "Expected: asciiFromInclusive >= 32");
         check(asciiToExclusive <= 177, "Expected: asciiToExclusive <= 176");
@@ -52,8 +51,8 @@ public final class Alphabets {
     }
 
     public static String asciiAlphabetWithControlCodes(int asciiFromInclusive, int asciiToExclusive) {
-        Args.checkNotNegative(asciiFromInclusive, "asciiFromInclusive");
-        Args.checkNotNegative(asciiToExclusive, "asciiToInclusive");
+        checkNotNegative(asciiFromInclusive, "asciiFromInclusive");
+        checkNotNegative(asciiToExclusive, "asciiToInclusive");
         check(asciiFromInclusive < asciiToExclusive, "Expected: asciiFromInclusive < asciiToExclusive");
         char[] chars = new char[asciiToExclusive - asciiFromInclusive];
         for (int i = asciiFromInclusive; i < asciiToExclusive; ++i) {

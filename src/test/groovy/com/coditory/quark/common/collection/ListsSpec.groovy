@@ -3,7 +3,7 @@ package com.coditory.quark.common.collection
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static Lists.*
+import static com.coditory.quark.common.collection.Lists.*
 
 class ListsSpec extends Specification {
     @Unroll
@@ -297,5 +297,12 @@ class ListsSpec extends Specification {
             a          || expected
             ["a", "b"] || ["ax", "bx"]
             []         || []
+    }
+
+    def "filter(list, predicate)"() {
+        when:
+            List<String> result = filter(["ax", "b", "x", "a"], { !it.contains("x") })
+        then:
+            result == ["b", "a"]
     }
 }

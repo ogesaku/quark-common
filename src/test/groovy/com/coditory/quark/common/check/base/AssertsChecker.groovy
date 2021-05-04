@@ -1,5 +1,6 @@
 package com.coditory.quark.common.check.base
 
+
 import com.coditory.quark.common.check.Asserts
 import groovy.transform.CompileStatic
 import org.jetbrains.annotations.Nullable
@@ -408,5 +409,36 @@ class AssertsChecker implements Checker {
     @Override
     int checkPositionIndex(int index, int size, String indexName) {
         return Asserts.assertPositionIndex(index, size, indexName)
+    }
+
+
+    @Override
+    String checkNotContains(@Nullable String value, char c) {
+        return Asserts.assertNotContains(value, c)
+    }
+
+    @Override
+    String checkNotContains(@Nullable String value, char c, String name) {
+        return Asserts.assertNotContains(value, c, name)
+    }
+
+    @Override
+    String checkNotContains(@Nullable String value, String c) {
+        return Asserts.assertNotContains(value, c)
+    }
+
+    @Override
+    String checkNotContains(@Nullable String value, String chunk, String name) {
+        return Asserts.assertNotContains(value, chunk, name)
+    }
+
+    @Override
+    String checkNotContainsAnyChar(@Nullable String value, String chars) {
+        return Asserts.assertNotContainsAnyChar(value, chars)
+    }
+
+    @Override
+    String checkNotContainsAnyChar(String value, String chars, String name) {
+        return Asserts.assertNotContainsAnyChar(value, chars, name)
     }
 }

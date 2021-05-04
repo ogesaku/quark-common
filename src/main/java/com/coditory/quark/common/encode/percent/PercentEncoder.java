@@ -1,13 +1,14 @@
 package com.coditory.quark.common.encode.percent;
 
 import com.coditory.quark.common.encode.Translator;
-import com.coditory.quark.common.bit.BitSets;
+import com.coditory.quark.common.util.BitSets;
 
 import java.io.CharArrayWriter;
 import java.nio.charset.Charset;
 import java.util.BitSet;
 
-import static com.coditory.quark.common.bit.BitSets.toBitSet;
+import static com.coditory.quark.common.util.BitSets.toBitSet;
+import static com.coditory.quark.common.util.BitSets.unmodifiableBitSet;
 import static com.coditory.quark.common.check.Args.checkNotNull;
 import static com.coditory.quark.common.text.Alphabets.URI_UNRESERVED;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -112,20 +113,18 @@ final class PercentEncoder implements Translator {
 
         public PercentEncoderBuilder addSafeCharacters(String safeCharacters) {
             checkNotNull(safeCharacters, "safeCharacters");
-            this.safeCharacters.or(toBitSet(safeCharacters));
-            return this;
+            return safeCharacters(toBitSet(safeCharacters));
         }
 
         public PercentEncoderBuilder safeCharacters(BitSet safeCharacters) {
             checkNotNull(safeCharacters, "safeCharacters");
-            this.safeCharacters = BitSets.copyOf(safeCharacters);
+            this.safeCharacters = unmodifiableBitSet(safeCharacters);
             return this;
         }
 
         public PercentEncoderBuilder safeCharacters(String safeCharacters) {
             checkNotNull(safeCharacters, "safeCharacters");
-            this.safeCharacters = toBitSet(safeCharacters);
-            return this;
+            return safeCharacters(toBitSet(safeCharacters));
         }
 
         public PercentEncoderBuilder spaceAsPlus(boolean spaceAsPlus) {
