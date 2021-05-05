@@ -66,7 +66,13 @@ public final class Throwables {
     }
 
     @Nullable
-    public static <T> T onErrorNull(ThrowingSupplier<T> action) {
+    public static <T> T onAnyErrorNull(ThrowingSupplier<T> action) {
+        checkNotNull(action, "action");
+        return onErrorNull(action.toSupplier());
+    }
+
+    @Nullable
+    public static <T> T onErrorNull(Supplier<T> action) {
         checkNotNull(action, "action");
         try {
             return action.get();
@@ -75,21 +81,40 @@ public final class Throwables {
         }
     }
 
-    public static <T> Optional<T> onErrorEmpty(ThrowingSupplier<T> action) {
+    public static <T> Optional<T> onAnyErrorEmpty(ThrowingSupplier<T> action) {
+        checkNotNull(action, "action");
+        return onErrorEmpty(action.toSupplier());
+    }
+
+    public static <T> Optional<T> onErrorEmpty(Supplier<T> action) {
         checkNotNull(action, "action");
         return Optional.ofNullable(onErrorNull(action));
     }
 
-    public static <T> T onErrorDefault(ThrowingSupplier<T> action, T defaultValue) {
+    @Nullable
+    public static <T> T onAnyErrorDefault(ThrowingSupplier<T> action, @Nullable T defaultValue) {
+        checkNotNull(action, "action");
+        return onErrorDefault(action.toSupplier(), defaultValue);
+    }
+
+    @Nullable
+    public static <T> T onErrorDefault(Supplier<T> action, @Nullable T defaultValue) {
         checkNotNull(action, "action");
         return onErrorEmpty(action)
                 .orElse(defaultValue);
     }
 
-    public static <T> T onErrorGet(ThrowingSupplier<T> action, ThrowingSupplier<T> defaultValue) {
+    @Nullable
+    public static <T> T onAnyErrorGet(ThrowingSupplier<T> action, ThrowingSupplier<T> defaultValue) {
+        checkNotNull(action, "action");
+        return onErrorGet(action.toSupplier(), defaultValue.toSupplier());
+    }
+
+    @Nullable
+    public static <T> T onErrorGet(Supplier<T> action, Supplier<T> defaultValue) {
         checkNotNull(action, "action");
         return onErrorEmpty(action)
-                .orElseGet(defaultValue.sneakyThrowing());
+                .orElseGet(defaultValue);
     }
 
 

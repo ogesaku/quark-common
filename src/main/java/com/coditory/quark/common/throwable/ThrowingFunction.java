@@ -12,7 +12,7 @@ public interface ThrowingFunction<T, R> {
         return Throwables.sneakyThrow(() -> apply(value));
     }
 
-    default Function<T, R> sneakyThrowing() {
+    default Function<T, R> toFunction() {
         return (T value) -> Throwables.sneakyThrow(() -> this.apply(value));
     }
 
@@ -24,9 +24,14 @@ public interface ThrowingFunction<T, R> {
         };
     }
 
-    static <T, R> Function<T, R> sneakyThrowing(ThrowingFunction<T, R> function) {
+    static <T, R> Function<T, R> sneakyFunction(ThrowingFunction<T, R> function) {
         checkNotNull(function, "function");
-        return function.sneakyThrowing();
+        return function.toFunction();
+    }
+
+    static <T, R> ThrowingFunction<T, R> throwingFunction(Function<T, R> function) {
+        checkNotNull(function, "function");
+        return function::apply;
     }
 
     static <T> ThrowingFunction<T, T> identity() {

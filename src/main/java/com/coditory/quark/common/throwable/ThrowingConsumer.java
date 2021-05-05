@@ -12,13 +12,18 @@ public interface ThrowingConsumer<T> {
         Throwables.sneakyThrow(() -> accept(value));
     }
 
-    default Consumer<T> sneakyThrowing() {
+    default Consumer<T> toConsumer() {
         return (value) -> Throwables.sneakyThrow(() -> accept(value));
     }
 
-    static <T> Consumer<T> sneakyThrowing(ThrowingConsumer<T> consumer) {
+    static <T> Consumer<T> sneakyConsumer(ThrowingConsumer<T> consumer) {
         checkNotNull(consumer, "consumer");
-        return consumer.sneakyThrowing();
+        return consumer.toConsumer();
+    }
+
+    static <T> ThrowingConsumer<T> throwingConsumer(Consumer<T> consumer) {
+        checkNotNull(consumer, "consumer");
+        return consumer::accept;
     }
 
     static <T> ThrowingConsumer<T> nop() {

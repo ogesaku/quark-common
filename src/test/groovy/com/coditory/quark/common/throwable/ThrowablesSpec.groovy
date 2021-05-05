@@ -132,11 +132,11 @@ class ThrowablesSpec extends Specification {
         given:
             String defaultValue = "default"
         when:
-            String result = Throwables.onErrorDefault({ throw new SimulatedException() }, defaultValue)
+            String result = Throwables.onAnyErrorDefault({ throw new SimulatedException() }, defaultValue)
         then:
             result == defaultValue
         when:
-            result = Throwables.onErrorDefault({ "abc" }, defaultValue)
+            result = Throwables.onAnyErrorDefault({ "abc" }, defaultValue)
         then:
             result == "abc"
     }
@@ -148,12 +148,12 @@ class ThrowablesSpec extends Specification {
             int executions = 0;
             ThrowingSupplier<String> defaultValueSupplier = { executions++; defaultValue }
         when:
-            String result = Throwables.onErrorGet({ throw new SimulatedException() }, defaultValueSupplier)
+            String result = Throwables.onAnyErrorGet({ throw new SimulatedException() }, defaultValueSupplier)
         then:
             result == defaultValue
             executions == 1
         when:
-            result = Throwables.onErrorGet({ "abc" }, defaultValueSupplier)
+            result = Throwables.onAnyErrorGet({ "abc" }, defaultValueSupplier)
         then:
             result == "abc"
             executions == 1
@@ -161,22 +161,22 @@ class ThrowablesSpec extends Specification {
 
     def "onErrorNull(supplier) - should return null on exception"() {
         when:
-            String result = Throwables.onErrorNull({ throw new SimulatedException() })
+            String result = Throwables.onAnyErrorNull({ throw new SimulatedException() })
         then:
             result == null
         when:
-            result = Throwables.onErrorNull({ "abc" })
+            result = Throwables.onAnyErrorNull({ "abc" })
         then:
             result == "abc"
     }
 
     def "onErrorEmpty(supplier) - should return empty optional on exception"() {
         when:
-            Optional<String> result = Throwables.onErrorEmpty({ throw new SimulatedException() })
+            Optional<String> result = Throwables.onAnyErrorEmpty({ throw new SimulatedException() })
         then:
             result.isEmpty()
         when:
-            result = Throwables.onErrorEmpty({ "abc" })
+            result = Throwables.onAnyErrorEmpty({ "abc" })
         then:
             result == Optional.of("abc")
     }

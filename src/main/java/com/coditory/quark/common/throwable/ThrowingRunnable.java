@@ -10,7 +10,7 @@ public interface ThrowingRunnable {
         Throwables.sneakyThrow(this);
     }
 
-    default Runnable sneakyThrowing() {
+    default Runnable toRunnable() {
         return () -> Throwables.sneakyThrow(this);
     }
 
@@ -22,9 +22,14 @@ public interface ThrowingRunnable {
         };
     }
 
-    static Runnable sneakyThrowing(ThrowingRunnable runnable) {
+    static Runnable sneakyRunnable(ThrowingRunnable runnable) {
         checkNotNull(runnable, "runnable");
-        return runnable.sneakyThrowing();
+        return runnable.toRunnable();
+    }
+
+    static Runnable throwingRunnable(Runnable runnable) {
+        checkNotNull(runnable, "runnable");
+        return runnable::run;
     }
 
     static <E extends Throwable> ThrowingRunnable nop() {

@@ -12,12 +12,17 @@ public interface ThrowingSupplier<T> {
         return Throwables.sneakyThrow(this);
     }
 
-    default Supplier<T> sneakyThrowing() {
+    default Supplier<T> toSupplier() {
         return () -> Throwables.sneakyThrow(this);
     }
 
-    static <T> Supplier<T> sneakyThrowing(ThrowingSupplier<T> supplier) {
+    static <T> Supplier<T> sneakySupplier(ThrowingSupplier<T> supplier) {
         checkNotNull(supplier, "supplier");
-        return supplier.sneakyThrowing();
+        return supplier.toSupplier();
+    }
+
+    static <T> ThrowingSupplier<T> throwingSupplier(Supplier<T> supplier) {
+        checkNotNull(supplier, "supplier");
+        return supplier::get;
     }
 }
